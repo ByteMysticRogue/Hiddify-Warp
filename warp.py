@@ -92,3 +92,7 @@ last_modified = "//last update on: " + warp_ip()[1] + "\n"
 configs = warp_ip()[0]
 with open('warp.json', 'w') as op:
     op.write(title + update_interval + sub_info + profile_web  + last_modified + configs)
+
+os.remove(ip_txt_path)
+os.remove(result_path)
+os.remove("warp")
