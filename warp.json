@@ -2,14 +2,14 @@
 //profile-update-interval: 1
 //subscription-userinfo: upload=0; download=0; total=10737418240000000; expire=2546249531
 //profile-web-page-url: https://github.com/ByteMysticRogue
-//last update on: 2024-03-06 23:29:23
-warp://188.114.97.21:7281?ifp=10-20&ifps=40-100&ifpd=10-20#Warp-1
-warp://188.114.96.250:1018?ifp=10-20&ifps=40-100&ifpd=10-20#Warp-2
-warp://188.114.98.61:7281?ifp=10-20&ifps=40-100&ifpd=10-20#Warp-3
-warp://188.114.99.99:7281?ifp=10-20&ifps=40-100&ifpd=10-20#Warp-4
-warp://188.114.97.140:7281?ifp=10-20&ifps=40-100&ifpd=10-20#Warp-5
-warp://188.114.96.200:1018?ifp=10-20&ifps=40-100&ifpd=10-20#Warp-6
-warp://188.114.98.68:1018?ifp=10-20&ifps=40-100&ifpd=10-20#Warp-7
-warp://188.114.97.237:7281?ifp=10-20&ifps=40-100&ifpd=10-20#Warp-8
-warp://162.159.195.211:2371?ifp=10-20&ifps=40-100&ifpd=10-20#Warp-9
-warp://162.159.192.242:7559?ifp=10-20&ifps=40-100&ifpd=10-20#Warp-10
+//last update on: 2024-03-07 00:31:12
+warp://188.114.99.254:2408?ifp=10-20&ifps=40-100&ifpd=10-20#Warp-1
+warp://188.114.96.3:1074?ifp=10-20&ifps=40-100&ifpd=10-20#Warp-2
+warp://188.114.99.253:1074?ifp=10-20&ifps=40-100&ifpd=10-20#Warp-3
+warp://188.114.99.254:1074?ifp=10-20&ifps=40-100&ifpd=10-20#Warp-4
+warp://188.114.99.241:2408?ifp=10-20&ifps=40-100&ifpd=10-20#Warp-5
+warp://188.114.99.239:1074?ifp=10-20&ifps=40-100&ifpd=10-20#Warp-6
+warp://188.114.99.237:2408?ifp=10-20&ifps=40-100&ifpd=10-20#Warp-7
+warp://188.114.96.3:2408?ifp=10-20&ifps=40-100&ifpd=10-20#Warp-8
+warp://188.114.99.243:2408?ifp=10-20&ifps=40-100&ifpd=10-20#Warp-9
+warp://188.114.99.224:1074?ifp=10-20&ifps=40-100&ifpd=10-20#Warp-10
