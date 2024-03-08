@@ -74,13 +74,9 @@ def warp_ip():
     formatted_time = datetime.datetime.fromtimestamp(creation_time).strftime("%Y-%m-%d %H:%M:%S")
     with open(result_path, 'r') as csv_file:
         next(csv_file)
-        for ips in csv_file:
-            counter += 1
-            if counter == 3:
-                break
-            else:
-                ip = ips.split(',')[0]
-                config_prefix = f'warp://{ip}?ifp=10-20&ifps=40-100&ifpd=10-20#Warp-{counter}\n'
+        ip1 = next(csv_file).split(',')[0]
+        ip2 = next(csv_file).split(',')[0]
+        config_prefix = f'warp://{ip1}?ifp=10-20&ifps=40-100&ifpd=10-20#Warp-IN-Warp&&detour=warp://{ip2}?ifp=10-20&ifps=40-100&ifpd=10-20#Warp-IR'
                 config_prefixes += config_prefix
     return config_prefixes, formatted_time
 
