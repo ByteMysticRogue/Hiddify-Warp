@@ -77,6 +77,7 @@ def warp_ip():
         config_prefix = f'warp://{ip1}?ifp=10-20&ifps=40-100&ifpd=10-20#Warp-IN-Warp&&detour=warp://{ip2}?ifp=10-20&ifps=40-100&ifpd=10-20#Warp-IR'
     return config_prefix, formatted_time
 
+
 title = "//profile-title: base64:" + base64.b64encode('Women Life Freedom ✌️'.encode('utf-8')).decode('utf-8') + "\n"
 update_interval = "//profile-update-interval: 1\n"
 sub_info = "//subscription-userinfo: upload=0; download=0; total=10737418240000000; expire=2546249531\n"
