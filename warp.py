@@ -76,7 +76,7 @@ def warp_ip():
         next(csv_file)
         for ips in csv_file:
             counter += 1
-            if counter == 4:
+            if counter == 3:
                 break
             else:
                 ip = ips.split(',')[0]
