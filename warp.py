@@ -68,8 +68,6 @@ else:
     print("Warp executed successfully.")
 
 def warp_ip():
-    counter = 0
-    config_prefixes = ""
     creation_time = os.path.getctime(result_path)
     formatted_time = datetime.datetime.fromtimestamp(creation_time).strftime("%Y-%m-%d %H:%M:%S")
     with open(result_path, 'r') as csv_file:
@@ -77,8 +75,7 @@ def warp_ip():
         ip1 = next(csv_file).split(',')[0]
         ip2 = next(csv_file).split(',')[0]
         config_prefix = f'warp://{ip1}?ifp=10-20&ifps=40-100&ifpd=10-20#Warp-IN-Warp&&detour=warp://{ip2}?ifp=10-20&ifps=40-100&ifpd=10-20#Warp-IR'
-                config_prefixes += config_prefix
-    return config_prefixes, formatted_time
+    return config_prefix, formatted_time
 
 title = "//profile-title: base64:" + base64.b64encode('Women Life Freedom ✌️'.encode('utf-8')).decode('utf-8') + "\n"
 update_interval = "//profile-update-interval: 1\n"
