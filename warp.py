@@ -1,4 +1,4 @@
-import ipaddress, platform, subprocess, os, datetime, base64, json
+import ipaddress, platform, subprocess, os, datetime, base64
 
 warp_cidr = [
         '162.159.192.0/24',
@@ -74,7 +74,7 @@ def warp_ip():
         next(csv_file)
         ip1 = next(csv_file).split(',')[0]
         ip2 = next(csv_file).split(',')[0]
-        config_prefix = f'warp://{ip1}?ifp=10-20&ifps=40-100&ifpd=10-20#Warp-IN-Warp&&detour=warp://{ip2}?ifp=10-20&ifps=40-100&ifpd=10-20#Warp-IR'
+        config_prefix = f'warp://{ip1}?ifp=10-20&ifps=20-60&ifpd=5-10#Warp-IN-Warp&&detour=warp://{ip2}?ifp=10-20&ifps=20-60&ifpd=5-10#Warp-IR'
     return config_prefix, formatted_time
 
 
