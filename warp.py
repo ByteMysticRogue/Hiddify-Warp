@@ -67,14 +67,22 @@ if process.returncode != 0:
 else:
     print("Warp executed successfully.")
 
+best_ipies = []
+
+with open(result_path, 'r') as csv_file:
+    next(csv_file)
+    c = 0
+    for line in csv_file:
+        best_ipies.append(line.split(',')[0])
+        c += 1
+        if c == 2:
+            break
+
 def warp_ip():
     creation_time = os.path.getctime(result_path)
     formatted_time = datetime.datetime.fromtimestamp(creation_time).strftime("%Y-%m-%d %H:%M:%S")
-    with open(result_path, 'r') as csv_file:
-        next(csv_file)
-        ip1 = next(csv_file).split(',')[0]
-        ip2 = next(csv_file).split(',')[0]
-        config_prefix = f'warp://{ip1}?ifp=10-20&ifps=20-60&ifpd=5-10#Warp-IN-Warp&&detour=warp://{ip2}?ifp=10-20&ifps=20-60&ifpd=5-10#Warp-IR'
+    for i, ip in enumerate(best_ipies):
+        config_prefix = f'warp://{best_ipies[0]}?ifp=10-20&ifps=20-60&ifpd=5-10#Warp-IN-Warp&&detour=warp://{best_ipies[1]}?ifp=10-20&ifps=20-60&ifpd=5-10#Warp-IR'
     return config_prefix, formatted_time
 
 
@@ -86,6 +94,10 @@ last_modified = "//last update on: " + warp_ip()[1] + "\n"
 configs = warp_ip()[0]
 with open('warp.json', 'w') as op:
     op.write(title + update_interval + sub_info + profile_web  + last_modified + configs)
+
+with open('best_ipies.txt', 'w') as f:
+    for ip in best_ipies:
+        f.write(f"{ip}\n")
 
 os.remove(ip_txt_path)
 os.remove(result_path)
