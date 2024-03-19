@@ -1,4 +1,4 @@
-import ipaddress, platform, subprocess, os, datetime, base64, json, random
+import ipaddress, platform, subprocess, os, datetime, base64
 
 warp_cidr = [
         '162.159.192.0/24',
@@ -13,9 +13,8 @@ warp_cidr = [
 
 script_directory = os.path.dirname(__file__)
 ip_txt_path = os.path.join(script_directory, 'ip.txt')
-sing_path = os.path.join(script_directory, 'sing-box.json')
 result_path = os.path.join(script_directory, 'result.csv')
-warp_path = os.path.join(script_directory, 'warp_wg.json')
+
 def create_ips():
     c = 0
     total_ips = sum(len(list(ipaddress.IPv4Network(cidr))) for cidr in warp_cidr)
@@ -78,70 +77,6 @@ def warp_ip():
         config_prefix = f'warp://{ip1}?ifp=10-20&ifps=20-60&ifpd=5-10#Warp-IN-Warp&&detour=warp://{ip2}?ifp=10-20&ifps=20-60&ifpd=5-10#Warp-IR'
     return config_prefix, formatted_time
 
-def genwp():
-  try:
-    plus_keys = [
-      'rG07CI28-1s563kvN-10H4KL2e',
-      'B5840lKs-D4T2A05K-7c52sL6D',
-      'U7u023PV-q69kJX54-31L6B7QH',
-      '284K0APF-B5M48H1A-NBw2e347',
-      'F589r2iq-p1J26j8c-f6YS18X3',
-      'ah629kQ0-O9j46U2G-D93Vu7s2',
-      'Ps41SG25-906Jhsl5-M6jN3u07'
-    ]
-    key = random.choice(plus_keys)
-
-    fetch_warp_go = f'https://github.com/yebekhe/Misaka_warp-script/raw/main/files/warp-go/warp-go-latest-linux-{arch}'
-    subprocess.run(["wget", fetch_warp_go, "-O", "warp-go"])
-    os.chmod("warp-go", 0o755)
-
-    warp_conf = 'https://api.zeroteam.top/warp?format=warp-go'
-    subprocess.run(["wget", warp_conf, "-O", "warp.conf"])
-
-    command = ['./warp-go', '--update', '--config=warp.conf', f'--license={key}', '--device-name=chef7']
-    subprocess.run(command)
-
-    export_config = ['./warp-go', '--config=warp.conf', f'--export-singbox={warp_path}']
-    subprocess.run(export_config)
-
-  except Exception as e:
-    print(f"An error occurred: {e}")
-
-def warp_singbox():
-    with open(result_path, 'r') as csv_file:
-        next(csv_file)
-        best_ip_port = next(csv_file)
-    genwp()
-    with open(warp_path, 'r') as json_file:
-        data = json.load(json_file)
-        private_key = data['outbounds'][0]["private_key"]
-        public_key = data['outbounds'][0]["peer_public_key"]
-        reserved = data['outbounds'][0]["reserved"]
-
-    new_json_data = {
-        "tag": "WARP+",
-        "type": "wireguard",
-        "server": f"{best_ip_port.split(',')[0].split(':')[0]}",
-        "server_port": int(best_ip_port.split(',')[0].split(':')[1]),
-        "local_address": [
-            "172.16.0.2/32",
-            "2606:4700:110:849c:5dd2:36c9:f1af:25fb/128"
-        ],
-        "private_key": f"{private_key}",
-        "peer_public_key": f"{public_key}",
-        "reserved": reserved,
-        "mtu": 1384
-    }
-
-    with open(sing_path, 'r') as j:
-        data = json.load(j)
-
-    for key, value in data.items():
-        if key == 'outbounds':
-            value.insert(2, new_json_data)
-
-    return data
-
 
 title = "//profile-title: base64:" + base64.b64encode('Women Life Freedom ✌️'.encode('utf-8')).decode('utf-8') + "\n"
 update_interval = "//profile-update-interval: 1\n"
@@ -152,13 +87,6 @@ configs = warp_ip()[0]
 with open('warp.json', 'w') as op:
     op.write(title + update_interval + sub_info + profile_web  + last_modified + configs)
 
-data = json.dumps(warp_singbox(), indent=4)
-with open('sing-warp.json', 'w') as f:
-    f.write(title + update_interval + sub_info + profile_web  + last_modified + data)
-
 os.remove(ip_txt_path)
 os.remove(result_path)
 os.remove("warp")
-os.remove("warp_wg.json")
-os.remove("warp.conf")
-os.remove("warp-go")
