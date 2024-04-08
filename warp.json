@@ -2,5 +2,5 @@
 //profile-update-interval: 1
 //subscription-userinfo: upload=0; download=0; total=10737418240000000; expire=2546249531
 //profile-web-page-url: https://github.com/ByteMysticRogue
-//last update on: 2024-04-08 00:39:46
-warp://162.159.195.191:945?ifp=10-20&ifps=20-60&ifpd=5-10#Warp-IN-Warp&&detour=warp://188.114.99.131:4500?ifp=10-20&ifps=20-60&ifpd=5-10#Warp-IR
+//last update on: 2024-04-08 12:15:02
+warp://162.159.195.233:955?ifp=10-20&ifps=20-60&ifpd=5-10#Warp-IN-Warp&&detour=warp://162.159.195.127:987?ifp=10-20&ifps=20-60&ifpd=5-10#Warp-IR
