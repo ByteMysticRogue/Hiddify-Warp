@@ -1,5 +1,6 @@
 import platform, subprocess, os, datetime, base64
 
+
 def arch_suffix():
     machine = platform.machine().lower()
     if machine.startswith('i386') or machine.startswith('i686'):
