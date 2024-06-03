@@ -1,39 +1,4 @@
-import ipaddress, platform, subprocess, os, datetime, base64
-
-warp_cidr = [
-        '162.159.192.0/24',
-        '162.159.193.0/24',
-        '162.159.195.0/24',
-        '162.159.204.0/24',
-        '188.114.96.0/24',
-        '188.114.97.0/24',
-        '188.114.98.0/24',
-        '188.114.99.0/24'
-    ]
-
-script_directory = os.path.dirname(__file__)
-ip_txt_path = os.path.join(script_directory, 'ip.txt')
-result_path = os.path.join(script_directory, 'result.csv')
-
-def create_ips():
-    c = 0
-    total_ips = sum(len(list(ipaddress.IPv4Network(cidr))) for cidr in warp_cidr)
-
-    with open(ip_txt_path, 'w') as file:
-        for cidr in warp_cidr:
-            ip_addresses = list(ipaddress.IPv4Network(cidr))
-            for addr in ip_addresses:
-                c += 1
-                file.write(str(addr))
-                if c != total_ips:
-                    file.write('\n')
-
-if os.path.exists(ip_txt_path):
-    print("ip.txt exist.")
-else:
-    print('Creating ip.txt File.')
-    create_ips()
-    print('ip.txt File Created Successfully!')
+import platform, subprocess, os, datetime, base64
 
 def arch_suffix():
     machine = platform.machine().lower()
@@ -48,57 +13,65 @@ def arch_suffix():
     else:
         raise ValueError("Unsupported CPU architecture")
 
-arch = arch_suffix()
 
-print("Fetch warp program...")
-url = f"https://gitlab.com/Misaka-blog/warp-script/-/raw/main/files/warp-yxip/warp-linux-{arch}"
+def export_bestIPS(path):
+    best_ips = []
 
-subprocess.run(["wget", url, "-O", "warp"])
-os.chmod("warp", 0o755)
-command = "./warp >/dev/null 2>&1"
-print("Scanning ips...")
-process = subprocess.Popen(command, shell=True)
-# Wait for the process to finish
-process.wait()
+    with open(path, 'r') as csv_file:
+        next(csv_file)
+        c = 0
+        for line in csv_file:
+            best_ips.append(line.split(',')[0])
+            c += 1
+            if c == 2:
+                break
 
-# Check if there's any error
-if process.returncode != 0:
-    print("Error: Warp execution failed.")
-else:
-    print("Warp executed successfully.")
+    with open('best_IPS.txt', 'w') as f:
+        for ip in best_ips:
+            f.write(f"{ip}\n")
 
-best_ipies = []
+    return best_ips
 
-with open(result_path, 'r') as csv_file:
-    next(csv_file)
-    c = 0
-    for line in csv_file:
-        best_ipies.append(line.split(',')[0])
-        c += 1
-        if c == 2:
-            break
 
-def warp_ip():
-    creation_time = os.path.getctime(result_path)
+def export_Hiddify(t_ips, f_ips):
+    creation_time = os.path.getctime(f_ips)
     formatted_time = datetime.datetime.fromtimestamp(creation_time).strftime("%Y-%m-%d %H:%M:%S")
-    for i, ip in enumerate(best_ipies):
-        config_prefix = f'warp://{best_ipies[0]}?ifp=10-20&ifps=20-60&ifpd=5-10#Warp-IN-Warp&&detour=warp://{best_ipies[1]}?ifp=10-20&ifps=20-60&ifpd=5-10#Warp-IR'
-    return config_prefix, formatted_time
+    config_prefix = f'warp://{t_ips[0]}?ifp=10-20&ifps=20-60&ifpd=5-10#Warp-IN-Warp&&detour=warp://{t_ips[1]}?ifp=10-20&ifps=20-60&ifpd=5-10#Warp-IR'
+
+    title = "//profile-title: base64:" + base64.b64encode('Women Life Freedom ✌️'.encode('utf-8')).decode(
+        'utf-8') + "\n"
+    update_interval = "//profile-update-interval: 1\n"
+    sub_info = "//subscription-userinfo: upload=0; download=0; total=10737418240000000; expire=2546249531\n"
+    profile_web = "//profile-web-page-url: https://github.com/ByteMysticRogue\n"
+    last_modified = "//last update on: " + formatted_time + "\n"
+
+    with open('warp.json', 'w') as op:
+        op.write(title + update_interval + sub_info + profile_web + last_modified + config_prefix)
 
 
-title = "//profile-title: base64:" + base64.b64encode('Women Life Freedom ✌️'.encode('utf-8')).decode('utf-8') + "\n"
-update_interval = "//profile-update-interval: 1\n"
-sub_info = "//subscription-userinfo: upload=0; download=0; total=10737418240000000; expire=2546249531\n"
-profile_web = "//profile-web-page-url: https://github.com/ByteMysticRogue\n"
-last_modified = "//last update on: " + warp_ip()[1] + "\n"
-configs = warp_ip()[0]
-with open('warp.json', 'w') as op:
-    op.write(title + update_interval + sub_info + profile_web  + last_modified + configs)
+def main(script_dir):
+    arch = arch_suffix()
+    print("Fetch warp program...")
+    url = f"https://gitlab.com/Misaka-blog/warp-script/-/raw/main/files/warp-yxip/warp-linux-{arch}"
+    subprocess.run(["wget", url, "-O", "warp"])
+    os.chmod("warp", 0o755)
+    command = "./warp >/dev/null 2>&1"
+    print("Scanning ips...")
+    process = subprocess.Popen(command, shell=True)
+    process.wait()
+    if process.returncode != 0:
+        print("Error: Warp execution failed.")
+    else:
+        print("Warp executed successfully.")
 
-with open('best_ipies.txt', 'w') as f:
-    for ip in best_ipies:
-        f.write(f"{ip}\n")
+    result_path = os.path.join(script_dir, 'result.csv')
+    top_ips = export_bestIPS(result_path)
+    export_Hiddify(t_ips=top_ips, f_ips=result_path)
 
-os.remove(ip_txt_path)
-os.remove(result_path)
-os.remove("warp")
+    os.remove("warp")
+    os.remove(result_path)
+
+
+if __name__ == '__main__':
+    script_directory = os.path.dirname(__file__)
+    main(script_directory)
