@@ -1,4 +1,4 @@
-import platform, subprocess, os, datetime, base64
+import platform, subprocess, os, datetime, base64, json
 
 
 def arch_suffix():
@@ -50,6 +50,51 @@ def export_Hiddify(t_ips, f_ips):
         op.write(title + update_interval + sub_info + profile_web + last_modified + config_prefix)
 
 
+def toSingBox(tag, clean_ip, detour):
+    print("Generating Warp Conf")
+    config_url = "https://api.zeroteam.top/warp?format=warp-go"
+    conf_name = 'warp.conf'
+    subprocess.run(["wget", config_url, "-O", f"{conf_name}"])
+    cmd = ["./warp-go", f"--config={conf_name}", "--export-singbox=proxy.json"]
+    process = subprocess.run(cmd, capture_output=True, text=True)
+    output = process.stdout
+
+    if (process.returncode == 0) and output:
+        with open('proxy.json', 'r') as f:
+            data = json.load(f)
+            wg = data["outbounds"][0]
+            wg['server'] = clean_ip.split(':')[0]
+            wg['server_port'] = int(clean_ip.split(':')[1])
+            wg['mtu'] = 1384
+            wg['workers'] = 2
+            wg['detour'] = detour
+            wg['tag'] = tag
+        return wg
+    else:
+        return None
+
+
+def export_SingBox(t_ips, arch):
+    with open('/Sing-Box Template/template.json', 'r') as f:
+        data = json.load(f)
+
+    warp_go_url = f"https://gitlab.com/Misaka-blog/warp-script/-/raw/main/files/warp-go/warp-go-latest-linux-{arch}"
+    subprocess.run(["wget", warp_go_url, "-O", "warp-go"])
+    os.chmod("warp-go", 0o755)
+
+    main_wg = toSingBox('WARP-MAIN', t_ips[0], "direct")
+    data["outbounds"].insert(1, main_wg)
+    wiw_wg = toSingBox('WARP-WIW', t_ips[1], "WARP-MAIN")
+    data["outbounds"].insert(2, wiw_wg)
+
+    with open('sing-box.json', 'w') as f:
+        f.write(json.dumps(data, indent=4))
+
+    os.remove("warp.conf")
+    os.remove("proxy.json")
+    os.remove("warp-go")
+
+
 def main(script_dir):
     arch = arch_suffix()
     print("Fetch warp program...")
@@ -68,6 +113,7 @@ def main(script_dir):
     result_path = os.path.join(script_dir, 'result.csv')
     top_ips = export_bestIPS(result_path)
     export_Hiddify(t_ips=top_ips, f_ips=result_path)
+    export_SingBox(t_ips=top_ips, arch=arch)
 
     os.remove("warp")
     os.remove(result_path)
