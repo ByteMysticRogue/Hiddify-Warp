@@ -3,6 +3,8 @@ name: CHEF_Warp
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - 'warp.py'
   schedule:
     - cron: '0 0,12 * * *'
 
