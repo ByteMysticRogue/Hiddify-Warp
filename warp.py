@@ -75,7 +75,7 @@ def toSingBox(tag, clean_ip, detour):
 
 
 def export_SingBox(t_ips, arch):
-    with open('/Sing-Box Template/template.json', 'r') as f:
+    with open('Sing-Box Template/template.json', 'r') as f:
         data = json.load(f)
 
     warp_go_url = f"https://gitlab.com/Misaka-blog/warp-script/-/raw/main/files/warp-go/warp-go-latest-linux-{arch}"
