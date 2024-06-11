@@ -1,5 +1,44 @@
-import platform, subprocess, os, datetime, base64, json
+import platform
+import subprocess
+import os
+import datetime
+import base64
+import json
+from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+from cryptography.hazmat.backends import default_backend
+import os
 
+# تابع برای رمزنگاری داده‌ها با AES
+def encrypt_data(key, data):
+    backend = default_backend()
+    iv = os.urandom(16)  # برای تولید یک بردار IV تصادفی
+    cipher = Cipher(algorithms.AES(key), modes.CFB(iv), backend=backend)
+    encryptor = cipher.encryptor()
+    ciphertext = encryptor.update(data) + encryptor.finalize()
+    return iv + ciphertext
+
+# تابع برای رمزگشایی داده‌ها با AES
+def decrypt_data(key, data):
+    backend = default_backend()
+    iv = data[:16]  # بردار IV قبل از داده‌های رمزنگاری شده
+    cipher = Cipher(algorithms.AES(key), modes.CFB(iv), backend=backend)
+    decryptor = cipher.decryptor()
+    plaintext = decryptor.update(data[16:]) + decryptor.finalize()
+    return plaintext
+
+# تابع ارسال داده‌های رمزنگاری شده
+def send_encrypted_data(socket, data):
+    encrypted_data = encrypt_data(key, data)
+    socket.send(encrypted_data)
+
+# تابع دریافت و رمزگشایی داده‌ها
+def receive_decrypted_data(socket):
+    encrypted_data = socket.recv(1024)
+    decrypted_data = decrypt_data(key, encrypted_data)
+    return decrypted_data
+
+# کلید برای رمزنگاری و رمزگشایی (باید در محیط اجرایی خود به امانت نگهداری شود)
+key = b'16_byte_secret_k'
 
 def arch_suffix():
     machine = platform.machine().lower()
@@ -98,27 +137,4 @@ def export_SingBox(t_ips, arch):
 def main(script_dir):
     arch = arch_suffix()
     print("Fetch warp program...")
-    url = f"https://gitlab.com/Misaka-blog/warp-script/-/raw/main/files/warp-yxip/warp-linux-{arch}"
-    subprocess.run(["wget", url, "-O", "warp"])
-    os.chmod("warp", 0o755)
-    command = "./warp >/dev/null 2>&1"
-    print("Scanning ips...")
-    process = subprocess.Popen(command, shell=True)
-    process.wait()
-    if process.returncode != 0:
-        print("Error: Warp execution failed.")
-    else:
-        print("Warp executed successfully.")
-
-    result_path = os.path.join(script_dir, 'result.csv')
-    top_ips = export_bestIPS(result_path)
-    export_Hiddify(t_ips=top_ips, f_ips=result_path)
-    export_SingBox(t_ips=top_ips, arch=arch)
-
-    os.remove("warp")
-    os.remove(result_path)
-
-
-if __name__ == '__main__':
-    script_directory = os.path.dirname(__file__)
-    main(script_directory)
+    url = f"https://gitlab.com/Misaka-blog/warp-script/-/raw/main/files/warp-yxip/warp-linux-{arch
