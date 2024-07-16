@@ -12,3 +12,7 @@ https://raw.githubusercontent.com/ByteMysticRogue/Hiddify-Warp/main/sing-box.jso
 # Scan Here 👇
 
 <img src="assets/qr-code.png" alt="Hiddify-QR" width="250"/>
+
+## Stargazers over time
+[![Stargazers over time](https://starchart.cc/ByteMysticRogue/Hiddify-Warp.svg?variant=light)](https://starchart.cc/ByteMysticRogue/Hiddify-Warp)
+
