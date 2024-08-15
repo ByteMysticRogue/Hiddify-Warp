@@ -84,43 +84,56 @@
             "interrupt_exist_connections": false
         },
         {
+            "tag": "Auto",
+            "type": "urltest",
+            "outbounds": [
+                "WARP-MAIN",
+                "WARP-WIW"
+            ],
+            "url": "http://cp.cloudflare.com/",
+            "interval": "15m",
+            "tolerance": 50,
+            "idle_timeout": "30m",
+            "interrupt_exist_connections": false
+        },
+        {
             "tag": "WARP-MAIN",
             "type": "wireguard",
-            "server": "162.159.195.56",
-            "server_port": 891,
+            "server": "188.114.96.24",
+            "server_port": 2371,
             "local_address": [
                 "172.16.0.2/32",
                 "2606:4700:110:8735:bb29:91bc:1c82:aa73/128"
             ],
-            "private_key": "sCWm7aWCVAbDaLUyuZ7+OIVbcybg5JCMydelVtk9i0A=",
+            "private_key": "P3r2vawfw5jY+V7yX/8GZKz7QTvcIV5sDZTFHWVgEHY=",
             "peer_public_key": "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=",
             "mtu": 1384,
             "reserved": [
-                54,
-                171,
-                72
+                168,
+                253,
+                152
             ],
-            "detour": "direct",
+            "detout": "direct",
             "workers": 2
         },
         {
             "tag": "WARP-WIW",
             "type": "wireguard",
-            "server": "188.114.96.183",
-            "server_port": 4177,
+            "server": "188.114.97.89",
+            "server_port": 7156,
             "local_address": [
                 "172.16.0.2/32",
                 "2606:4700:110:8735:bb29:91bc:1c82:aa73/128"
             ],
-            "private_key": "e8Feccrk4CN1F8W3QYOw5iipiTs9clynRLaH/RaXdK8=",
+            "private_key": "xLvoFE5AbTBU2mdjrR30/9T1fDtNhdMVup/36rkBd+0=",
             "peer_public_key": "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=",
             "mtu": 1384,
             "reserved": [
-                15,
-                65,
-                10
+                159,
+                156,
+                193
             ],
-            "detour": "WARP-MAIN",
+            "detout": "WARP-MAIN",
             "workers": 2
         },
         {
