@@ -84,6 +84,16 @@
             "interrupt_exist_connections": false
         },
         {
+            "tag": "Auto",
+            "type": "urltest",
+            "outbounds": [],
+            "url": "http:\/\/cp.cloudflare.com\/",
+            "interval": "15m",
+            "tolerance": 50,
+            "idle_timeout": "30m",
+            "interrupt_exist_connections": false
+        },
+        {
             "tag": "direct",
             "type": "direct"
         },
