@@ -74,6 +74,8 @@ def toSingBox(tag, clean_ip, detour):
             "detout": f"{detour}",
             "workers": 2
         }
+        os.remove("api.sh")
+        os.remove("warp-account.conf")
         return wg
     else:
         return None
@@ -89,8 +91,7 @@ def export_SingBox(t_ips):
 
     with open('sing-box.json', 'w') as f:
         f.write(json.dumps(data, indent=4))
-    os.remove("api.sh")
-    os.remove("warp-account.conf")
+
 
 def main(script_dir):
     arch = arch_suffix()
@@ -111,7 +112,6 @@ def main(script_dir):
     top_ips = export_bestIPS(result_path)
     export_Hiddify(top_ips, result_path)
     export_SingBox(top_ips)
-
 
     os.remove(result_path)
 
