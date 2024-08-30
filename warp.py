@@ -75,7 +75,6 @@ def toSingBox(tag, clean_ip, detour):
             "workers": 2
         }
         os.remove("api.sh")
-        os.remove("warp-account.conf")
         return wg
     else:
         return None
