@@ -102,14 +102,14 @@
     ],
     "outbounds": [
         {
-            "tag": "Proxy",
+            "tag": "🌐 Proxy",
             "type": "selector",
             "outbounds": [],
             "default": "WARP-WIW",
             "interrupt_exist_connections": false
         },
         {
-            "tag": "Auto",
+            "tag": "⚡ Fastest",
             "type": "urltest",
             "outbounds": [],
             "url": "http:\/\/www.gstatic.com\/generate_204",
