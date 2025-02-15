@@ -1,13 +1,17 @@
 # Hiddify-Warp
 Hiddify Warp Sub - Updating Every 12 Hours!
 
-# Hiddify URL <img src="assets/hiddify.png" alt="Hiddify" width="40"/>
+# <img src="assets/hiddify.png" alt="Hiddify" width="40"/> Hiddify
 ```
 https://raw.githubusercontent.com/ByteMysticRogue/Hiddify-Warp/main/warp.json
 ```
-# Sing-Box URL <img src="assets/singbox.svg" alt="Sing-Box" width="30"/>
+# <img src="assets/singbox.svg" alt="Sing-Box" width="30"/> Sing-Box
 ```
 https://raw.githubusercontent.com/ByteMysticRogue/Hiddify-Warp/main/sing-box.json
+```
+# <img src="assets/xray.png" alt="xray" width="30"/> Xray
+```
+https://raw.githubusercontent.com/ByteMysticRogue/Hiddify-Warp/main/xray.json
 ```
 # Scan Here 👇
 
