@@ -2,12 +2,20 @@
     "log": {
         "loglevel": "warning"
     },
-    "dns": {
-      "hosts": {
-        "domain:googleapis.cn": "googleapis.com"
-      },
-      "servers": [
-        "1.1.1.1"
+    "dns" : {
+      "queryStrategy" : "UseIPv4",
+      "servers" : [
+        "https:\/\/1.1.1.1\/dns-query",
+        {
+          "address" : "8.8.8.8",
+          "domains" : [
+            "domain:.ir",
+            "geosite:category-ir"
+          ],
+          "expectIPs" : [
+            "geoip:ir"
+          ]
+        }
       ]
     },
     "inbounds": [
@@ -34,7 +42,7 @@
       {
         "protocol": "freedom",
         "settings": {
-
+          "domainStrategy": "UseIPv4"
         },
         "tag": "direct"
       },
@@ -73,6 +81,13 @@
         "outboundTag": "block",
         "network": "udp",
         "port": "853, 443"
+        },
+        {
+          "domain": [
+            "geosite:category-ads-all"
+          ],
+          "outboundTag": "block",
+          "type": "field"
         },
         {
             "domain": [
