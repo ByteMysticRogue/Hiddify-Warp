@@ -5,6 +5,8 @@ on:
     branches: [ "main" ]
     paths:
       - 'warp.py'
+      - 'Template/singbox_template.json'
+      - 'Template/xray_template.json'
   schedule:
     - cron: '0 0,12 * * *'
 
