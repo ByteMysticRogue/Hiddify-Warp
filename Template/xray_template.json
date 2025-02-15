@@ -1,0 +1,101 @@
+{
+    "log": {
+        "loglevel": "warning"
+    },
+    "dns": {
+      "hosts": {
+        "domain:googleapis.cn": "googleapis.com"
+      },
+      "servers": [
+        "1.1.1.1"
+      ]
+    },
+    "inbounds": [
+      {
+        "listen": "127.0.0.1",
+        "port": 10808,
+        "protocol": "socks",
+        "settings": {
+          "auth": "noauth",
+          "udp": true,
+          "userLevel": 8
+        },
+        "sniffing": {
+          "destOverride": [
+            "http",
+            "tls"
+          ],
+          "enabled": true
+        },
+        "tag": "socks"
+      }
+    ],
+    "outbounds": [
+      {
+        "protocol": "freedom",
+        "settings": {
+
+        },
+        "tag": "direct"
+      },
+      {
+        "protocol": "blackhole",
+        "settings": {
+          "response": {
+            "type": "http"
+          }
+        },
+        "tag": "block"
+      }
+    ],
+    "routing": {
+      "domainStrategy": "IPIfNonMatch",
+      "rules": [
+        {
+          "ip": [
+            "1.1.1.1"
+          ],
+          "outboundTag": "proxy",
+          "port": "53",
+          "type": "field"
+        },
+        {
+            "port": "53",
+            "outboundTag": "dns-out",
+            "type": "field"
+        },
+        {
+        "port": "853",
+        "network": "tcp",
+        "outboundTag": "block"
+        },
+        {
+        "outboundTag": "block",
+        "network": "udp",
+        "port": "853, 443"
+        },
+        {
+            "domain": [
+              "domain:.ir",
+              "geosite:category-ir"
+            ],
+            "outboundTag": "direct",
+            "type": "field"
+        },
+        {
+            "ip": [
+              "geoip:ir",
+              "geoip:private"
+            ],
+            "outboundTag": "direct",
+            "type": "field"
+        },
+        {
+          "type": "field",
+          "port": "0-65535",
+          "outboundTag": "proxy",
+          "enabled": true
+        }
+      ]
+    }
+  }
