@@ -3,24 +3,33 @@
         "loglevel": "warning"
     },
     "dns": {
-        "queryStrategy": "UseIPv4",
+        "hosts": {
+            "geosite:category-ads-all": [
+                "127.0.0.1"
+            ],
+            "geosite:category-ads-ir": [
+                "127.0.0.1"
+            ]
+        },
         "servers": [
-            "https://1.1.1.1/dns-query",
+            "1.1.1.1",
+            "1.0.0.1",
             {
                 "address": "8.8.8.8",
                 "domains": [
-                    "domain:.ir",
                     "geosite:category-ir"
                 ],
                 "expectIPs": [
                     "geoip:ir"
-                ]
+                ],
+                "skipFallback": true
             }
-        ]
+        ],
+        "queryStrategy": "UseIPv4",
+        "tag": "dns"
     },
     "inbounds": [
         {
-            "listen": "127.0.0.1",
             "port": 10808,
             "protocol": "socks",
             "settings": {
@@ -33,9 +42,39 @@
                     "http",
                     "tls"
                 ],
-                "enabled": true
+                "enabled": true,
+                "routeOnly": true
             },
-            "tag": "socks"
+            "tag": "socks-in"
+        },
+        {
+            "port": 10809,
+            "protocol": "http",
+            "settings": {
+                "auth": "noauth",
+                "udp": true,
+                "userLevel": 8
+            },
+            "sniffing": {
+                "destOverride": [
+                    "http",
+                    "tls"
+                ],
+                "enabled": true,
+                "routeOnly": true
+            },
+            "tag": "http-in"
+        },
+        {
+            "listen": "127.0.0.1",
+            "port": 10853,
+            "protocol": "dokodemo-door",
+            "settings": {
+                "address": "1.1.1.1",
+                "network": "tcp,udp",
+                "port": 53
+            },
+            "tag": "dns-in"
         }
     ],
     "outbounds": [
@@ -49,16 +88,16 @@
                 "mtu": 1280,
                 "peers": [
                     {
-                        "endpoint": "188.114.98.221:7559",
+                        "endpoint": "188.114.96.204:859",
                         "publicKey": "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo="
                     }
                 ],
                 "reserved": [
-                    56,
-                    114,
-                    187
+                    242,
+                    37,
+                    156
                 ],
-                "secretKey": "UE1PmBqKtFfk9CXXasrYmoCN56CCEHCbC9ULhDv+iUU="
+                "secretKey": "kEDuKRUraVbnuU0Kv7QJVkS/6RGC92iSAnm95si21Ws="
             },
             "streamSettings": {
                 "sockopt": {
@@ -97,20 +136,46 @@
             "tag": "block"
         }
     ],
+    "policy": {
+        "levels": {
+            "8": {
+                "connIdle": 300,
+                "downlinkOnly": 1,
+                "handshake": 4,
+                "uplinkOnly": 1
+            }
+        },
+        "system": {
+            "statsOutboundUplink": true,
+            "statsOutboundDownlink": true
+        }
+    },
     "routing": {
         "domainStrategy": "IPIfNonMatch",
         "rules": [
             {
-                "ip": [
-                    "1.1.1.1"
+                "inboundTag": [
+                    "dns-in"
                 ],
-                "outboundTag": "proxy",
-                "port": "53",
+                "outboundTag": "dns-out",
                 "type": "field"
             },
             {
+                "inboundTag": [
+                    "socks-in",
+                    "http-in"
+                ],
                 "port": "53",
                 "outboundTag": "dns-out",
+                "type": "field"
+            },
+            {
+                "ip": [
+                    "8.8.8.8"
+                ],
+                "port": "53",
+                "network": "udp",
+                "outboundTag": "direct",
                 "type": "field"
             },
             {
@@ -147,10 +212,9 @@
                 "type": "field"
             },
             {
-                "type": "field",
-                "port": "0-65535",
+                "network": "tcp,udp",
                 "outboundTag": "proxy",
-                "enabled": true
+                "type": "field"
             }
         ]
     },
