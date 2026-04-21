@@ -88,16 +88,16 @@
                 "mtu": 1280,
                 "peers": [
                     {
-                        "endpoint": "188.114.98.176:4500",
+                        "endpoint": "162.159.195.69:943",
                         "publicKey": "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo="
                     }
                 ],
                 "reserved": [
-                    235,
-                    143,
-                    128
+                    200,
+                    21,
+                    67
                 ],
-                "secretKey": "EB+uafDBlZpjiMhNR1uyT6ffNWT56oxGtUKtz+XAhnQ="
+                "secretKey": "wMfN0xEF8mN8e2+xaLzIG4hYHEwSJcJ+CjNA6ePA03Y="
             },
             "streamSettings": {
                 "sockopt": {
